@@ -9,7 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
-class MyAdapter (val context:Context, val userList:CurrencyRates2):RecyclerView.Adapter<MyAdapter.ViewHolder>(){
+class MyAdapter (private val context:Context, private val userList:CurrencyRates2):RecyclerView.Adapter<MyAdapter.ViewHolder>(){
     class ViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
         var userID:TextView
         var title:TextView
