@@ -26,9 +26,9 @@ class MyAdapter (val context:Context, val userList:Array<String>):RecyclerView.A
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val splitter: List<String> = userList[position].split("=")
-        Log.e("Test", userList.size.toString())
         holder.userID.text = splitter[0]
-        holder.title.text = splitter[1]
+        val x:Double = splitter[1].toDouble()*100
+        holder.title.text = x.toString()
     }
 
     override fun getItemCount(): Int {

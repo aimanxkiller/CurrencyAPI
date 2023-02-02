@@ -57,7 +57,6 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(call: Call<CurrencyRates2>, response: Response<CurrencyRates2>) {
                 data = response.body()!!
 
-
                 val string:Array<String> = data.rates.toString()
                     .replace("(","")
                     .replace(")","")
@@ -66,19 +65,15 @@ class MainActivity : AppCompatActivity() {
                     .replace("RatesX","")
                     .split(",").toTypedArray()
 
-                Toast.makeText(this@MainActivity,string.size.toString(),Toast.LENGTH_SHORT).show()
-
                 myAdapter = MyAdapter(baseContext,string)
                 myAdapter.notifyDataSetChanged()
                 recyclerView.adapter = myAdapter
 
             }
-
             override fun onFailure(call: Call<CurrencyRates2>, t: Throwable) {
                 Log.e("DataError",t.message.toString())
                 Toast.makeText(this@MainActivity,t.message,Toast.LENGTH_SHORT).show()
             }
-
         })
     }
 }
