@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
 
         recyclerView = findViewById(R.id.recyclerviewCur)
         recyclerView.setHasFixedSize(true)
-        linearlayoutManager = LinearLayoutManager(this)
+        linearlayoutManager = LinearLayoutManager(this@MainActivity)
         recyclerView.layoutManager = linearlayoutManager
 
         getCurrencyData()
@@ -57,17 +57,21 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(call: Call<CurrencyRates2>, response: Response<CurrencyRates2>) {
                 data = response.body()!!
 
-                val string = data.rates.toString()
+
+                val string:Array<String> = data.rates.toString()
                     .replace("(","")
                     .replace(")","")
-                    .split(",")
+                    .replace("[","")
+                    .replace("]","")
+                    .replace("RatesX","")
+                    .split(",").toTypedArray()
 
-                string.forEachIndexed { index, s ->
-                    val splitter = string[index].split("=")
-                        Log.e("DataSplit",   "RM 1 value is " + splitter[1] +splitter[0])
-                }
-                val myAdapter = MyAdapter(baseContext, data)
+                Toast.makeText(this@MainActivity,string.size.toString(),Toast.LENGTH_SHORT).show()
+
+                myAdapter = MyAdapter(baseContext,string)
+                myAdapter.notifyDataSetChanged()
                 recyclerView.adapter = myAdapter
+
             }
 
             override fun onFailure(call: Call<CurrencyRates2>, t: Throwable) {
