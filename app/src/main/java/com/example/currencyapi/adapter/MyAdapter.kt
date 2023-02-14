@@ -1,4 +1,4 @@
-package com.example.currencyapi
+package com.example.currencyapi.adapter
 
 import android.content.Context
 import android.util.Log
@@ -7,6 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.currencyapi.R
+import java.math.RoundingMode
+import java.text.DecimalFormat
+import kotlin.math.roundToLong
 
 class MyAdapter (val context:Context, val userList:Array<String>):RecyclerView.Adapter<MyAdapter.ViewHolder>() {
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -27,11 +31,14 @@ class MyAdapter (val context:Context, val userList:Array<String>):RecyclerView.A
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val splitter: List<String> = userList[position].split("=")
         holder.userID.text = splitter[0]
-        val x:Double = splitter[1].toDouble()*100
-        holder.title.text = x.toString()
+        val df = DecimalFormat("#.####")
+        df.roundingMode= RoundingMode.DOWN
+
+        holder.title.text = df.format(splitter[1].toDouble()*100).toString()
     }
 
     override fun getItemCount(): Int {
         return userList.size
     }
+
 }

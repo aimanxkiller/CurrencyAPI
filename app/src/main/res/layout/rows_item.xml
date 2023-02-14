@@ -5,13 +5,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.cardview.widget.CardView
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="0dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="0dp"
-        app:cardBackgroundColor="@color/white"
+        app:cardBackgroundColor="@color/black"
         app:cardCornerRadius="15dp"
         app:cardElevation="5dp"
         app:cardMaxElevation="0dp"
@@ -28,6 +29,7 @@
         android:layout_marginBottom="20dp"
         android:text="100 MYR"
         android:textSize="20sp"
+        android:textColor="@color/green"
         android:textStyle="bold" />
         <TextView
             android:id="@+id/textID"
@@ -36,11 +38,13 @@
             android:layout_gravity="top"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="45dp"
+            android:textColor="@color/white"
             android:layout_marginBottom="20dp"
             android:text="Test Name"
             android:textSize="20sp"
             android:textStyle="bold" />
         <TextView
+            android:textColor="@color/white"
             android:id="@+id/textTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -1,4 +1,4 @@
-package com.example.currencyapi
+package com.example.currencyapi.model
 
 data class CurrencyRates2(
     val base_code: String,

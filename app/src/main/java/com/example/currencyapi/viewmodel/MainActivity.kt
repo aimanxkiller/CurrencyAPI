@@ -1,13 +1,16 @@
-package com.example.currencyapi
+package com.example.currencyapi.viewmodel
 
-import android.annotation.SuppressLint
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.GsonBuilder
+import com.example.currencyapi.R
+import com.example.currencyapi.adapter.MyAdapter
+import com.example.currencyapi.model.CurrencyRates2
+import com.example.currencyapi.model.WeatherAPI
+import com.example.currencyapi.network.ApiInterface
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -19,11 +22,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 class MainActivity : AppCompatActivity() {
 
     lateinit var myAdapter: MyAdapter
-    lateinit var linearlayoutManager: LinearLayoutManager
+    private lateinit var linearlayoutManager: LinearLayoutManager
     lateinit var recyclerView: RecyclerView
 
-    val BASE_URL = "https://open.er-api.com/v6/latest/"
-    lateinit var data:CurrencyRates2
+    private val BASE_URL = "https://open.er-api.com/v6/latest/"
+    lateinit var data: CurrencyRates2
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -33,27 +36,51 @@ class MainActivity : AppCompatActivity() {
         linearlayoutManager = LinearLayoutManager(this@MainActivity)
         recyclerView.layoutManager = linearlayoutManager
 
+        var x:WeatherAPI
+
         getCurrencyData()
+//        getWeatherData()
     }
 
-    private fun getCurrencyData(){
-        val gson = GsonBuilder().setLenient().create()
+    private fun getWeatherData(){
         val okhttpClientBuilder = OkHttpClient.Builder()
         val logging = HttpLoggingInterceptor()
         logging.setLevel(HttpLoggingInterceptor.Level.BODY)
         okhttpClientBuilder.addInterceptor(logging)
-
         val retrofitBuilder = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(BASE_URL)
             .client(okhttpClientBuilder.build())
             .build()
             .create(ApiInterface::class.java)
+        val retrofitData = retrofitBuilder.getData()
 
+        retrofitData.enqueue(object : Callback<WeatherAPI>{
+            override fun onResponse(call: Call<WeatherAPI>, response: Response<WeatherAPI>) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onFailure(call: Call<WeatherAPI>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+
+        })
+    }
+
+    private fun getCurrencyData(){
+        val okhttpClientBuilder = OkHttpClient.Builder()
+        val logging = HttpLoggingInterceptor()
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY)
+        okhttpClientBuilder.addInterceptor(logging)
+        val retrofitBuilder = Retrofit.Builder()
+            .addConverterFactory(GsonConverterFactory.create())
+            .baseUrl(BASE_URL)
+            .client(okhttpClientBuilder.build())
+            .build()
+            .create(ApiInterface::class.java)
         val retrofitData = retrofitBuilder.getData()
 
         retrofitData.enqueue(object : Callback<CurrencyRates2>{
-            @SuppressLint("SuspiciousIndentation")
             override fun onResponse(call: Call<CurrencyRates2>, response: Response<CurrencyRates2>) {
                 data = response.body()!!
 

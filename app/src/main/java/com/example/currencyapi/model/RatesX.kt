@@ -1,8 +1,8 @@
-package com.example.currencyapi
+package com.example.currencyapi.model
 
 data class RatesX(
+    /*
     val ARS: Double,
-    val AUD: Double,
     val AWG: Double,
     val AZN: Double,
     val BAM: Double,
@@ -14,11 +14,8 @@ data class RatesX(
     val BWP: Double,
     val BYN: Double,
     val BZD: Double,
-    val CAD: Double,
     val CDF: Double,
-    val CHF: Double,
     val CLP: Double,
-    val CNY: Double,
     val COP: Double,
     val CRC: Double,
     val CUP: Double,
@@ -31,11 +28,9 @@ data class RatesX(
     val EGP: Double,
     val ERN: Double,
     val ETB: Double,
-    val EUR: Double,
     val FJD: Double,
     val FKP: Double,
     val FOK: Double,
-    val GBP: Double,
     val GEL: Double,
     val GGP: Double,
     val GHS: Double,
@@ -44,7 +39,6 @@ data class RatesX(
     val GNF: Double,
     val GTQ: Double,
     val GYD: Double,
-    val HKD: Double,
     val HNL: Double,
     val HRK: Double,
     val HTG: Double,
@@ -59,7 +53,6 @@ data class RatesX(
     val JEP: Double,
     val JMD: Double,
     val JOD: Double,
-    val JPY: Double,
     val KES: Double,
     val KGS: Double,
     val KHR: Double,
@@ -104,7 +97,6 @@ data class RatesX(
     val SCR: Double,
     val SDG: Double,
     val SEK: Double,
-    val SGD: Double,
     val SHP: Double,
     val SLE: Double,
     val SLL: Double,
@@ -116,6 +108,16 @@ data class RatesX(
     val TWD: Double,
     val TZS: Double,
     val UAH: Double,
-    val UGX: Double,
+    val UGX: Double, */
+
+    val HKD: Double,
+    val SGD: Double,
+    val CAD: Double,
+    val CHF: Double,
+    val AUD: Double,
+    val CNY: Double,
+    val GBP: Double,
+    val JPY: Double,
+    val EUR: Double,
     val USD: Double
 )
