@@ -1,5 +1,6 @@
 package com.example.currencyapi.viewmodel
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -26,20 +27,23 @@ class MainActivity : AppCompatActivity() {
     lateinit var recyclerView: RecyclerView
 
     private val BASE_URL = "https://open.er-api.com/v6/latest/"
+    private val BASE_URL2 = "https://api.open-meteo.com/v1/"
     lateinit var data: CurrencyRates2
+    lateinit var data2: WeatherAPI
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         recyclerView = findViewById(R.id.recyclerviewCur)
         recyclerView.setHasFixedSize(true)
-        linearlayoutManager = LinearLayoutManager(this@MainActivity)
+        linearlayoutManager = LinearLayoutManager(this@MainActivity,LinearLayoutManager.HORIZONTAL,false)
         recyclerView.layoutManager = linearlayoutManager
 
-        var x:WeatherAPI
+
 
         getCurrencyData()
-//        getWeatherData()
+        getWeatherData()
     }
 
     private fun getWeatherData(){
@@ -49,28 +53,30 @@ class MainActivity : AppCompatActivity() {
         okhttpClientBuilder.addInterceptor(logging)
         val retrofitBuilder = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(BASE_URL)
+            .baseUrl(BASE_URL2)
             .client(okhttpClientBuilder.build())
             .build()
             .create(ApiInterface::class.java)
-        val retrofitData = retrofitBuilder.getData()
+        val retrofitData = retrofitBuilder.getDataAPI()
 
         retrofitData.enqueue(object : Callback<WeatherAPI>{
             override fun onResponse(call: Call<WeatherAPI>, response: Response<WeatherAPI>) {
-                TODO("Not yet implemented")
+                data2 = response.body()!!
+
+                Log.e("DataWeatherAPI", data2.toString())
             }
 
             override fun onFailure(call: Call<WeatherAPI>, t: Throwable) {
-                TODO("Not yet implemented")
+                Log.e("DataError",t.message.toString())
+                Toast.makeText(this@MainActivity,t.message,Toast.LENGTH_SHORT).show()
             }
-
         })
     }
 
     private fun getCurrencyData(){
         val okhttpClientBuilder = OkHttpClient.Builder()
         val logging = HttpLoggingInterceptor()
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY)
+        logging.setLevel(HttpLoggingInterceptor.Level.BASIC)
         okhttpClientBuilder.addInterceptor(logging)
         val retrofitBuilder = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
@@ -81,6 +87,7 @@ class MainActivity : AppCompatActivity() {
         val retrofitData = retrofitBuilder.getData()
 
         retrofitData.enqueue(object : Callback<CurrencyRates2>{
+            @SuppressLint("NotifyDataSetChanged")
             override fun onResponse(call: Call<CurrencyRates2>, response: Response<CurrencyRates2>) {
                 data = response.body()!!
 
