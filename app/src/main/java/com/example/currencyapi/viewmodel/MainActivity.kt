@@ -1,6 +1,8 @@
 package com.example.currencyapi.viewmodel
 
+import android.R.attr
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -12,6 +14,9 @@ import com.example.currencyapi.adapter.MyAdapter
 import com.example.currencyapi.model.CurrencyRates2
 import com.example.currencyapi.model.WeatherAPI
 import com.example.currencyapi.network.ApiInterface
+import com.jjoe64.graphview.GraphView
+import com.jjoe64.graphview.series.DataPoint
+import com.jjoe64.graphview.series.LineGraphSeries
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -19,12 +24,15 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import kotlin.math.sin
+
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var myAdapter: MyAdapter
     private lateinit var linearlayoutManager: LinearLayoutManager
     lateinit var recyclerView: RecyclerView
+    lateinit var graph:GraphView
 
     private val BASE_URL = "https://open.er-api.com/v6/latest/"
     private val BASE_URL2 = "https://api.open-meteo.com/v1/"
@@ -34,6 +42,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        //Graph layout
+        graph = findViewById(R.id.graphOne)
 
         recyclerView = findViewById(R.id.recyclerviewCur)
         recyclerView.setHasFixedSize(true)
@@ -63,9 +74,24 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(call: Call<WeatherAPI>, response: Response<WeatherAPI>) {
                 data2 = response.body()!!
 
-                Log.e("DataWeatherAPI", data2.toString())
-            }
+                //Form Series
+                var formOne = LineGraphSeries<DataPoint>()
+                formOne.color = Color.RED
+                var formTwo = LineGraphSeries<DataPoint>()
+                var y:Double
+                graph.viewport.setMaxX(70.0)
+                for (x in 0 .. 150){
+                    var z:Double = x.toDouble()
+                    y= data2.hourly.weathercode[x].toDouble()
+                    formOne.appendData(DataPoint(z,y),true,200)
+                    y= data2.hourly.rain[x].toDouble()
+                    formTwo.appendData(DataPoint(z,y),true,200)
+                }
 
+                graph.addSeries(formOne)
+                graph.addSeries(formTwo)
+
+            }
             override fun onFailure(call: Call<WeatherAPI>, t: Throwable) {
                 Log.e("DataError",t.message.toString())
                 Toast.makeText(this@MainActivity,t.message,Toast.LENGTH_SHORT).show()
