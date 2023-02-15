@@ -1,6 +1,5 @@
 package com.example.currencyapi.viewmodel
 
-import android.R.attr
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
@@ -24,7 +23,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import kotlin.math.sin
 
 
 class MainActivity : AppCompatActivity() {
@@ -51,8 +49,6 @@ class MainActivity : AppCompatActivity() {
         linearlayoutManager = LinearLayoutManager(this@MainActivity,LinearLayoutManager.HORIZONTAL,false)
         recyclerView.layoutManager = linearlayoutManager
 
-
-
         getCurrencyData()
         getWeatherData()
     }
@@ -75,16 +71,16 @@ class MainActivity : AppCompatActivity() {
                 data2 = response.body()!!
 
                 //Form Series
-                var formOne = LineGraphSeries<DataPoint>()
+                val formOne = LineGraphSeries<DataPoint>()
                 formOne.color = Color.RED
-                var formTwo = LineGraphSeries<DataPoint>()
+                val formTwo = LineGraphSeries<DataPoint>()
                 var y:Double
                 graph.viewport.setMaxX(70.0)
                 for (x in 0 .. 150){
-                    var z:Double = x.toDouble()
+                    val z:Double = x.toDouble()
                     y= data2.hourly.weathercode[x].toDouble()
                     formOne.appendData(DataPoint(z,y),true,200)
-                    y= data2.hourly.rain[x].toDouble()
+                    y= data2.hourly.rain[x]
                     formTwo.appendData(DataPoint(z,y),true,200)
                 }
 
